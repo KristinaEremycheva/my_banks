@@ -6,21 +6,21 @@ import json
 def get_contracts(start_date, stop_date, inn):
     contracts = []
 
-    # конструируем запрос
+    # РєРѕРЅСЃС‚СЂСѓРёСЂСѓРµРј Р·Р°РїСЂРѕСЃ
     url = 'http://openapi.clearspending.ru/restapi/v3/contracts/select/?'
-    # период
+    # РїРµСЂРёРѕРґ
     url += "&daterange=%s-%s" % (start_date, stop_date)
-    # ИНН поставщика услуг (банка)
+    # РРќРќ РїРѕСЃС‚Р°РІС‰РёРєР° СѓСЃР»СѓРі (Р±Р°РЅРєР°)
     url += "&supplierinn=%s" % inn
-    # федеральный закон
+    # С„РµРґРµСЂР°Р»СЊРЅС‹Р№ Р·Р°РєРѕРЅ
     url += "&fz=44"
 
     res = requests.get(url)
     ans = json.loads(res.text)
     if "contracts" in ans:
-        # количество контрактов
+        # РєРѕР»РёС‡РµСЃС‚РІРѕ РєРѕРЅС‚СЂР°РєС‚РѕРІ
         num_contracts = ans["contracts"]["total"]
-        # количество страниц в ответе
+        # РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂР°РЅРёС† РІ РѕС‚РІРµС‚Рµ
         num_pages = num_contracts / 50 + (num_contracts % 50 != 0)
 
         for page in range(1, num_pages+1):
